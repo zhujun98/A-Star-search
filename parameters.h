@@ -1,5 +1,5 @@
 //
-// Created by jun on 8/25/17.
+// Global parameters.
 //
 
 #ifndef BACHELOR_PARAMETERS_H

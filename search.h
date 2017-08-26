@@ -1,5 +1,5 @@
 //
-// Created by jun on 8/24/17.
+// A* search algorithm.
 //
 
 #ifndef BACHELOR_SEARCH_H

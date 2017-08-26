@@ -1,5 +1,5 @@
 //
-// Created by jun on 8/24/17.
+// Test Map class and A* search.
 //
 
 #ifndef BACHELOR_TEST_MAP_H

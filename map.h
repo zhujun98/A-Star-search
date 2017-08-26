@@ -1,5 +1,5 @@
 //
-// Created by jun on 8/24/17.
+// Map class header.
 //
 
 #ifndef BACHELOR_MAP_H
