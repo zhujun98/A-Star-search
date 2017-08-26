@@ -32,16 +32,16 @@ public:
     // destructor
     ~Map();
 
-    // check whether a grid belongs to the map
-    bool isValid(pair grid) const;
+    // check whether a point belongs to the map
+    bool isValid(pair point) const;
 
-    // check whether a grid is an obstacle (water, marsh)
-    bool isObstacle(pair grid) const;
+    // check whether a point is an obstacle (water, marsh)
+    bool isObstacle(pair point) const;
 
-    // calculate the cost between two adjacent grids
+    // calculate the cost between two adjacent points
     double evalCost(pair src, pair dst) const;
 
-    // calculate the different of elevation between two grids
+    // calculate the different of elevation between two points
     int elevationDiff(pair src, pair dst) const;
 
     // get width of the map
@@ -50,11 +50,11 @@ public:
     // get height of the map
     size_t height() const;
 
-    // get number of grids
+    // get number of points
     size_t size() const;
 
     // get the index when the 2d array is flatten to 1D
-    size_t getIndex(pair grid) const;
+    size_t getIndex(pair point) const;
 
 };
 

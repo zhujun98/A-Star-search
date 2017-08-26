@@ -20,15 +20,15 @@ mmap::Map::Map(size_t width,
 
 mmap::Map::~Map() {}
 
-bool mmap::Map::isValid(pair grid) const
+bool mmap::Map::isValid(pair point) const
 {
-    return ( grid.first >= 0 && grid.first < width_ &&
-             grid.second >= 0 && grid.second < height_ );
+    return ( point.first >= 0 && point.first < width_ &&
+             point.second >= 0 && point.second < height_ );
 }
 
-bool mmap::Map::isObstacle(pair grid) const
+bool mmap::Map::isObstacle(pair point) const
 {
-    size_t idx = grid.second*width_ + grid.first;
+    size_t idx = point.second*width_ + point.first;
     return (((*overrides_)[idx] & (OF_WATER_BASIN | OF_RIVER_MARSH)) ||
             (*elevation_)[idx] == 0);
 }
@@ -48,8 +48,8 @@ double mmap::Map::evalCost(pair src, pair dst) const
     }
 
     double cost;
-    // The cost of one uphill grid plus two downhill grids equals to
-    // that of three flat grids. The difference in penalty/award reflects
+    // The cost of one uphill point plus two downhill points equals to
+    // that of three flat points. The difference in penalty/award reflects
     // the path length increase when going uphill or downhill.
     if (elevation_diff > 0)
     {
@@ -61,9 +61,9 @@ double mmap::Map::evalCost(pair src, pair dst) const
     return cost;
 }
 
-size_t mmap::Map::getIndex(pair grid) const
+size_t mmap::Map::getIndex(pair point) const
 {
-    return (grid.second*width_ + grid.first);
+    return (point.second*width_ + point.first);
 }
 
 int mmap::Map::elevationDiff(pair src, pair dst) const
