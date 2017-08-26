@@ -152,7 +152,7 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
         if (explored[pick_idx]) { continue; }
         explored[pick_idx] = true;
 
-        // loop over the surrounding 8 points
+        // loop over neighbor points
         for (const auto &pts : map.neighbors(pick))
         {
             size_t next_idx = map.getIndex(pts);

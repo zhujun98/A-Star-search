@@ -97,8 +97,9 @@ double mmap::Map::evalCost(const pair& src, const pair& dst) const
 
     double cost;
     // The cost of one uphill point plus two downhill points equals to
-    // that of three flat points. The difference in penalty/award reflects
-    // the path length increase when going uphill or downhill.
+    // that of three flat points. The difference in penalty/award
+    // reflects the path length increase no matter if the rover goes
+    // uphill or downhill.
     if (elevation_diff > 0)
     {
         cost = dist + dist*elevation_diff/10.0;
