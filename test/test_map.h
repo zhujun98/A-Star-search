@@ -114,7 +114,7 @@ void testFullMap()
 
 //    display(path, width);
 
-    assert(std::abs(path.first - 7.11985) < 1.0e-5 );
+    assert(std::abs(path.first - 7.16985) < 1.0e-5 );
     assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 7);
     std::cout << "Passed!" << std::endl;
 }
