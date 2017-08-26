@@ -38,18 +38,22 @@ Run it: ./Bachelor
 
 ## Motion model
 
-- The rover’s normal speed is 1 cell per island second. For example if the rover’s going diagonally, the time consumption is sqrt(2).
-- **A simple model is used to describe the rover's speed when going uphill and downhill**
-  
-  v_uphill = normal_speed*(1 + elevation_difference/10)
-  
-  v_downhill = normal_speed*(1 - elevation_difference/20)
-  
-  It means the cost of one uphill grid plus two downhill grids equals to that of three flat grids. The difference in penalty/award reflects the path length increase when going uphill or downhill.
-  
+- The rover’s normal speed is 1 cell per island second. For example if the rover’s going diagonally, the time consumption is sqrt(2). 
 - The rover cannot swim, nor can it crawl marshes
 - The rover’s speed is lower uphill. It’s part of the task to model in which way it becomes slower.
 - The rover’s speed gets higher when running downhill. It’s part of the task to model in which way it becomes faster.
+- **A simple model is used to describe the rover's time consumption when going uphill and downhill**
+  
+  uphill_time_consumption = normal_time_consumption*(1 + elevation_difference/10)
+  
+  downhill_time_consumption = normal_time_consumption*(1 - elevation_difference/20)
+  
+  Here 'elevation_difference' refers to the difference of elevation between two points. The maximum elevation difference between two reachable points is 8 in this map. The model concludes that the cost of one uphill point plus two downhill points equals to that of three flat points. The difference in uphill penalty and downhill award reflects the path length increase when going uphill or downhill.
+
+## Search model
+
+A* search algorithm is implemented.
 
 ## Result
 
+![](output/output.png)
