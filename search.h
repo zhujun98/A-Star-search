@@ -146,7 +146,11 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
         open_set.pop();
 
         // stop search when reach the destination
-        if (pick == dst) { break; }
+        if (pick == dst)
+        {
+            return std::make_pair(costs[map.getIndex(dst)],
+                                  reconstructPath(map, came_from, src, dst));
+        }
 
         // skip the old copies in the open set
         if (explored[pick_idx]) { continue; }
@@ -185,8 +189,8 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
         }
     }
 
-    return std::make_pair(costs[map.getIndex(dst)],
-                          reconstructPath(map, came_from, src, dst));
+    throw std::invalid_argument(
+        "Invalid argument: source and destination are not connected!");
 }
 
 } // namespace msearch

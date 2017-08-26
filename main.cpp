@@ -85,19 +85,38 @@ int main(int argc, char** argv)
 
     clock_t t0 = clock();
 
-    // shortest path from rover to bachelor
-    std::pair<double, std::vector<bool>>
-        roverToBachelor = map.shortestPath(rover, bachelor);
+    std::pair<double, std::vector<bool>> rover_to_bachelor;
+    bool found_bachelor = false;
+    std::cout << "Searching path from rover to bachelor...\n";
+    try
+    {
+        // shortest path from rover to bachelor
+        rover_to_bachelor = map.shortestPath(rover, bachelor);
+        found_bachelor = true;
+        std::cout << "The minimum time from the rover to the bachelor is: "
+                  << rover_to_bachelor.first << " island seconds" << std::endl;
+    }
+    catch (const std::exception& ia)
+    {
+        std::cerr << ia.what() << std::endl;
+    }
 
-    std::cout << "The minimum time from the rover to the bachelor is: "
-              << roverToBachelor.first << " island seconds" << std::endl;
+    std::pair<double, std::vector<bool>> bachelor_to_wedding;
+    bool found_wedding = false;
+    std::cout << "Searching path from bachelor to wedding...\n";
+    try
+    {
+        // shortest path from bachelor to wedding
+        bachelor_to_wedding = map.shortestPath(bachelor, wedding);
+        found_wedding = true;
+        std::cout << "The minimum time from the bachelor to the wedding is: "
+                  << bachelor_to_wedding.first << " island seconds" << std::endl;
 
-    // shortest path from bachelor to wedding
-    std::pair<double, std::vector<bool>>
-        bachelorToWedding = map.shortestPath(bachelor, wedding);
-
-    std::cout << "The minimum time from the bachelor to the wedding is: "
-              << bachelorToWedding.first << " island seconds" << std::endl;
+    }
+    catch (const std::exception& ia)
+    {
+        std::cerr << ia.what() << std::endl;
+    }
 
     std::cout << "Total search time: "
               << 1000.0*(clock() - t0)/CLOCKS_PER_SEC << " ms" << std::endl;
@@ -120,8 +139,12 @@ int main(int argc, char** argv)
             }
 
             // Mark the path
-            if (roverToBachelor.second[y * IMAGE_DIM + x] ||
-                bachelorToWedding.second[y * IMAGE_DIM + x])
+            if (found_bachelor && rover_to_bachelor.second[y * IMAGE_DIM + x])
+            {
+                return uint8_t(visualizer::IPV_PATH);
+            }
+
+            if (found_wedding && bachelor_to_wedding.second[y * IMAGE_DIM + x])
             {
                 return uint8_t(visualizer::IPV_PATH);
             }

@@ -60,22 +60,22 @@ mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) cons
 {
     if (! isValid(src))
     {
-        throw std::invalid_argument("Source point is not valid!");
+        throw std::out_of_range("Out of range: source!");
     }
 
     if (! isValid(dst))
     {
-        throw std::invalid_argument("destination point is not valid!");
+        throw std::out_of_range("Out of range: destination!");
     }
 
     if (isObstacle(src))
     {
-        throw std::invalid_argument("Source point is unreachable!");
+        throw std::invalid_argument("Invalid_argument: source unreachable!");
     }
 
     if (isObstacle(dst))
     {
-        throw std::invalid_argument("destination point is unreachable!");
+        throw std::invalid_argument("Invalid_argument: destination unreachable!");
     }
 
     return msearch::aStarSearch(*this, src, dst, fast_search);
