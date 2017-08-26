@@ -79,9 +79,10 @@ int main(int argc, char** argv)
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
 
     mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
-    msearch::pair rover = std::make_pair(159, 1520);
-    msearch::pair bachelor = std::make_pair(1303, 85);
-    msearch::pair wedding = std::make_pair(1577, 1294);
+
+    msearch::pair rover = std::make_pair(ROVER_X, ROVER_Y);
+    msearch::pair bachelor = std::make_pair(BACHELOR_X, BACHELOR_Y);
+    msearch::pair wedding = std::make_pair(WEDDING_X, WEDDING_Y);
 
     // shortest path from rover to bachelor
     std::pair<double, std::vector<bool>>
