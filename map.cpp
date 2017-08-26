@@ -12,8 +12,8 @@
 
 mmap::Map::Map(size_t width,
          size_t height,
-         std::vector<uint8_t>& elevation,
-         std::vector<uint8_t>& overrides) :
+         const std::vector<uint8_t>& elevation,
+         const std::vector<uint8_t>& overrides) :
     width_(width),
     height_(height),
     elevation_(&elevation),
@@ -22,7 +22,7 @@ mmap::Map::Map(size_t width,
 mmap::Map::~Map() {}
 
 std::pair<double, std::vector<bool>>
-mmap::Map::shortestPath(pair src, pair dst)
+mmap::Map::shortestPath(const pair& src, const pair& dst) const
 {
     if (! isValid(src))
     {
@@ -47,20 +47,20 @@ mmap::Map::shortestPath(pair src, pair dst)
     return msearch::aStarSearch(*this, src, dst);
 };
 
-bool mmap::Map::isValid(pair point) const
+bool mmap::Map::isValid(const pair& point) const
 {
     return ( point.first >= 0 && point.first < width_ &&
              point.second >= 0 && point.second < height_ );
 }
 
-bool mmap::Map::isObstacle(pair point) const
+bool mmap::Map::isObstacle(const pair& point) const
 {
     size_t idx = point.second*width_ + point.first;
     return (((*overrides_)[idx] & (OF_WATER_BASIN | OF_RIVER_MARSH)) ||
             (*elevation_)[idx] == 0);
 }
 
-double mmap::Map::evalCost(pair src, pair dst) const
+double mmap::Map::evalCost(const pair& src, const pair& dst) const
 {
     double dist = 1.0;
     if ( src.first != dst.first && src.second != dst.second )
@@ -88,12 +88,12 @@ double mmap::Map::evalCost(pair src, pair dst) const
     return cost;
 }
 
-size_t mmap::Map::getIndex(pair point) const
+size_t mmap::Map::getIndex(const pair& point) const
 {
     return (point.second*width_ + point.first);
 }
 
-int mmap::Map::elevationDiff(pair src, pair dst) const
+int mmap::Map::elevationDiff(const pair& src, const pair& dst) const
 {
     size_t src_idx = getIndex(src);
     size_t dst_idx = getIndex(dst);

@@ -17,17 +17,17 @@ typedef std::pair<size_t, size_t> pair;
 class Map {
 
 private:
-    size_t width_; // width of the map
-    size_t height_; // height of the map
-    std::vector<uint8_t>* elevation_; // pointer to elevation
-    std::vector<uint8_t>* overrides_; // pointer to overrides
+    const size_t width_; // width of the map
+    const size_t height_; // height of the map
+    const std::vector<uint8_t>* const elevation_; // pointer to elevation
+    const std::vector<uint8_t>* const overrides_; // pointer to overrides
 
 public:
     // constructor
     Map(size_t width,
         size_t height,
-        std::vector<uint8_t>& elevation,
-        std::vector<uint8_t>& overrides);
+        const std::vector<uint8_t>& elevation,
+        const std::vector<uint8_t>& overrides);
 
     // destructor
     ~Map();
@@ -43,19 +43,20 @@ public:
      *          elevation and overrides with the point in the shortest path
      *          marked "true".
      */
-    std::pair<double, std::vector<bool>> shortestPath(pair src, pair dst);
+    std::pair<double, std::vector<bool>>
+    shortestPath(const pair& src, const pair& dst) const;
 
     // check whether a point belongs to the map
-    bool isValid(pair point) const;
+    bool isValid(const pair& point) const;
 
     // check whether a point is an obstacle (water, marsh)
-    bool isObstacle(pair point) const;
+    bool isObstacle(const pair& point) const;
 
     // calculate the cost between two adjacent points
-    double evalCost(pair src, pair dst) const;
+    double evalCost(const pair& src, const pair& dst) const;
 
     // calculate the different of elevation between two points
-    int elevationDiff(pair src, pair dst) const;
+    int elevationDiff(const pair& src, const pair& dst) const;
 
     // get width of the map
     size_t width() const;
@@ -67,7 +68,7 @@ public:
     size_t size() const;
 
     // get the index when the 2d array is flatten to 1D
-    size_t getIndex(pair point) const;
+    size_t getIndex(const pair& point) const;
 
 };
 

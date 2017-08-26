@@ -26,7 +26,7 @@ typedef std::pair<size_t, size_t> pair;
  * @param dst: destination point
  * @return: cost
  */
-double heuristicManhattan(pair src, pair dst)
+double heuristicManhattan(const pair& src, const pair& dst)
 {
     double dx = std::abs((double)src.first - (double)dst.first);
     double dy = std::abs((double)src.second - (double)dst.second);
@@ -41,7 +41,7 @@ double heuristicManhattan(pair src, pair dst)
  * @param dst: destination point
  * @return: cost
  */
-double heuristicDiagonal(pair src, pair dst)
+double heuristicDiagonal(const pair& src, const pair& dst)
 {
     double dx = std::abs((double)src.first - (double)dst.first);
     double dy = std::abs((double)src.second - (double)dst.second);
@@ -75,8 +75,8 @@ struct cmpByCost
 std::vector<bool>
 reconstructPath(const mmap::Map &map,
                 const std::vector<pair>& came_from,
-                pair src,
-                pair dst)
+                const pair& src,
+                const pair& dst)
 {
     // True if the point is in the shortest path
     // The space complexity is high but it facilitate the later map marking.
@@ -113,7 +113,8 @@ reconstructPath(const mmap::Map &map,
  *          marked "true".
  */
 std::pair<double, std::vector<bool>>
-aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false)
+aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
+            bool use_dijkstra=false)
 {
     // The first element is the actual cost from source to the current
     // point plus the estimated cost from the current point to the
