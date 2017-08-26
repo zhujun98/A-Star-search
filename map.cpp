@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "map.h"
+#include "search.h"
 #include "parameters.h"
 
 
@@ -19,6 +20,32 @@ mmap::Map::Map(size_t width,
     overrides_(&overrides) {}
 
 mmap::Map::~Map() {}
+
+std::pair<double, std::vector<bool>>
+mmap::Map::shortestPath(pair src, pair dst)
+{
+    if (! isValid(src))
+    {
+        throw std::invalid_argument("Source point is not valid!");
+    }
+
+    if (! isValid(dst))
+    {
+        throw std::invalid_argument("destination point is not valid!");
+    }
+
+    if (isObstacle(src))
+    {
+        throw std::invalid_argument("Source point is unreachable!");
+    }
+
+    if (isObstacle(dst))
+    {
+        throw std::invalid_argument("destination point is unreachable!");
+    }
+
+    return msearch::aStarSearch(*this, src, dst);
+};
 
 bool mmap::Map::isValid(pair point) const
 {

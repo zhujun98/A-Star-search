@@ -184,43 +184,6 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false)
                           reconstructPath(map, came_from, src, dst));
 }
 
-/**
- * Search the shortest path between two points.
- *
- * @param map: Map object
- * @param src: source point
- * @param dst: destination point
- * @return: a pair with the first element being the cost of the shortest
- *          path and the second element being a 1D vector similar to
- *          elevation and overrides with the point in the shortest path
- *          marked "true".
- */
-std::pair<double, std::vector<bool>>
-shortestPath(const mmap::Map &map, pair src, pair dst)
-{
-    if (! map.isValid(src))
-    {
-        throw std::invalid_argument("Source point is not valid!");
-    }
-
-    if (! map.isValid(dst))
-    {
-        throw std::invalid_argument("destination point is not valid!");
-    }
-
-    if (map.isObstacle(src))
-    {
-        throw std::invalid_argument("Source point is unreachable!");
-    }
-
-    if (map.isObstacle(dst))
-    {
-        throw std::invalid_argument("destination point is unreachable!");
-    }
-
-    return aStarSearch(map, src, dst, false);
-};
-
 } // namespace msearch
 
 #endif //BACHELOR_SEARCH_H

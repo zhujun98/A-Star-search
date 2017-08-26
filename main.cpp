@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "map.h"
-#include "test/test_map.h"
+//#include "test/test_map.h"
 //#include "test/explore_map.h"
 #include "parameters.h"
 
@@ -69,7 +69,7 @@ bool donut(int x, int y, int x1, int y1)
 
 int main(int argc, char** argv)
 {
-    testMapSearch();
+//    testMapSearch();
 
     printf("%s\n", argv[0]);
     
@@ -80,23 +80,29 @@ int main(int argc, char** argv)
     mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
 //    maxElevationDiff(map);
 
-    msearch::pair rover = std::make_pair(ROVER_X, ROVER_Y);
-    msearch::pair bachelor = std::make_pair(BACHELOR_X, BACHELOR_Y);
-    msearch::pair wedding = std::make_pair(WEDDING_X, WEDDING_Y);
+    typedef std::pair<size_t, size_t> pair;
+    pair rover = std::make_pair(ROVER_X, ROVER_Y);
+    pair bachelor = std::make_pair(BACHELOR_X, BACHELOR_Y);
+    pair wedding = std::make_pair(WEDDING_X, WEDDING_Y);
+
+    clock_t t0 = clock();
 
     // shortest path from rover to bachelor
     std::pair<double, std::vector<bool>>
-        roverToBachelor = msearch::shortestPath(map, rover, bachelor);
+        roverToBachelor = map.shortestPath(rover, bachelor);
 
     std::cout << "The minimum time from the rover to the bachelor is: "
               << roverToBachelor.first << std::endl;
 
     // shortest path from bachelor to wedding
     std::pair<double, std::vector<bool>>
-        bachelorToWedding = msearch::shortestPath(map, bachelor, wedding);
+        bachelorToWedding = map.shortestPath(bachelor, wedding);
 
     std::cout << "The minimum time from the bachelor to the wedding is: "
               << bachelorToWedding.first << std::endl;
+
+    std::cout << "Search time: " << 1000.0*(clock() - t0)/CLOCKS_PER_SEC
+              << " ms" << std::endl;
 
     std::ofstream of("pic.bmp");
     

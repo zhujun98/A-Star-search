@@ -6,11 +6,10 @@
 #define BACHELOR_TEST_MAP_H
 
 #include <iostream>
+#include <assert.h>
 #include <algorithm>
 #include <vector>
 #include "../map.h"
-#include "../search.h"
-
 
 /**
  * Summarize the shorted path
@@ -48,7 +47,9 @@ void testUniformMap()
     mmap::Map map(width, height, elevation, overrides);
 
     std::pair<double, std::vector<bool>>
-        path = msearch::shortestPath(map, std::make_pair(0, 0), std::make_pair(3, 1));
+        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1));
+
+//    display(path, width);
 
     assert(std::abs(path.first - 3.41421) < 1.0e-5 );
     assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 4);
@@ -77,7 +78,7 @@ void testWaterMap()
     mmap::Map map(width, height, elevation, overrides);
 
     std::pair<double, std::vector<bool>>
-        path = msearch::shortestPath(map, std::make_pair(0, 0), std::make_pair(3, 1));
+        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1));
 
     assert(std::abs(path.first - 4.82843) < 1.0e-5 );
     assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 5);
@@ -110,7 +111,7 @@ void testFullMap()
     mmap::Map map(width, height, elevation, overrides);
 
     std::pair<double, std::vector<bool>>
-        path = msearch::shortestPath(map, std::make_pair(0, 0), std::make_pair(5, 3));
+        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(5, 3));
 
 //    display(path, width);
 

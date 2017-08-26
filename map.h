@@ -32,6 +32,19 @@ public:
     // destructor
     ~Map();
 
+    /**
+     * Search the shortest path between two points.
+     *
+     * @param map: Map object
+     * @param src: source point
+     * @param dst: destination point
+     * @return: a pair with the first element being the cost of the shortest
+     *          path and the second element being a 1D vector similar to
+     *          elevation and overrides with the point in the shortest path
+     *          marked "true".
+     */
+    std::pair<double, std::vector<bool>> shortestPath(pair src, pair dst);
+
     // check whether a point belongs to the map
     bool isValid(pair point) const;
 
