@@ -90,9 +90,10 @@ double mmap::Map::evalCost(const pair& src, const pair& dst) const
     }
 
     int elevation_diff = elevationDiff(src, dst);
-    if ( std::abs(elevation_diff) > 10 )
+    if ( std::abs(elevation_diff) > 20 )
     {
-        throw std::invalid_argument("Elevation difference cannot exceed 10!");
+        std::cerr << "The model may be inadequate when elevation difference "
+                  << "is larger than 20! " << std::endl;
     }
 
     double cost;
