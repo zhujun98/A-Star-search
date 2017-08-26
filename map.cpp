@@ -37,6 +37,7 @@ double mmap::Map::evalCost(pair src, pair dst) const
 {
     double dx = (double)src.first - (double)dst.first;
     double dy = (double)src.second - (double)dst.second;
+
     double cost = std::sqrt(dx*dx + dy*dy);
 
     return cost;
