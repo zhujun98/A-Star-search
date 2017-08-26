@@ -106,6 +106,8 @@ reconstructPath(const mmap::Map &map,
  * @param map: Map object
  * @param src: source point
  * @param dst: destination point
+ * @param fast_search: true for fast search but the result path maybe
+ *                     longer than the shortest path
  * @param use_dijkstra: true for degenerating to Dijkstra's algorithm.
  * @return: a pair with the first element being the cost of the shortest
  *          path and the second element being a 1D vector similar to
@@ -114,7 +116,7 @@ reconstructPath(const mmap::Map &map,
  */
 std::pair<double, std::vector<bool>>
 aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
-            bool use_dijkstra=false)
+            bool fast_search, bool use_dijkstra=false)
 {
     // The first element is the actual cost from source to the current
     // point plus the estimated cost from the current point to the
@@ -165,7 +167,17 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
 
                 // Add heuristic
                 double h = 0;
-                if (!use_dijkstra) { h = heuristicDiagonal(pts, dst); }
+                if (!use_dijkstra)
+                {
+                    if (fast_search)
+                    {
+                        h = heuristicManhattan(pts, dst);
+                    }
+                    else
+                    {
+                        h = heuristicDiagonal(pts, dst);
+                    }
+                }
                 double estimated_dist = new_dist + h;
 
                 open_set.push(std::make_pair(estimated_dist, pts));

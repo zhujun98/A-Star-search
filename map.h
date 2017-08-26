@@ -54,7 +54,7 @@ public:
      *          marked "true".
      */
     std::pair<double, std::vector<bool>>
-    shortestPath(const pair& src, const pair& dst) const;
+    shortestPath(const pair& src, const pair& dst, bool fast_search=false) const;
 
     // calculate the cost between two adjacent points
     double evalCost(const pair& src, const pair& dst) const;

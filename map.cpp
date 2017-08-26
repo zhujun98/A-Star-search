@@ -53,7 +53,7 @@ std::deque<mmap::pair> mmap::Map::neighbors(const pair& src) const
 }
 
 std::pair<double, std::vector<bool>>
-mmap::Map::shortestPath(const pair& src, const pair& dst) const
+mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) const
 {
     if (! isValid(src))
     {
@@ -75,7 +75,7 @@ mmap::Map::shortestPath(const pair& src, const pair& dst) const
         throw std::invalid_argument("destination point is unreachable!");
     }
 
-    return msearch::aStarSearch(*this, src, dst);
+    return msearch::aStarSearch(*this, src, dst, fast_search);
 };
 
 double mmap::Map::evalCost(const pair& src, const pair& dst) const
