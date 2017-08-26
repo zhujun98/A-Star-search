@@ -21,6 +21,37 @@ mmap::Map::Map(size_t width,
 
 mmap::Map::~Map() {}
 
+bool mmap::Map::isValid(const pair& point) const
+{
+    return ( point.first >= 0 && point.first < width_ &&
+             point.second >= 0 && point.second < height_ );
+}
+
+bool mmap::Map::isObstacle(const pair& point) const
+{
+    size_t idx = point.second*width_ + point.first;
+    return (((*overrides_)[idx] & (OF_WATER_BASIN | OF_RIVER_MARSH)) ||
+            (*elevation_)[idx] == 0);
+}
+
+std::deque<mmap::pair> mmap::Map::neighbors(const pair& src) const
+{
+    std::deque<pair> neighbors;
+    for (int i = -1; i <= 1; ++i)
+    {
+        for (int j = -1; j <= 1; ++j)
+        {
+            pair pts = std::make_pair(src.first + i, src.second + j);
+            if (pts != src && isValid(pts) && !isObstacle(pts))
+            {
+                neighbors.push_back(pts);
+            }
+        }
+    }
+
+    return neighbors;
+}
+
 std::pair<double, std::vector<bool>>
 mmap::Map::shortestPath(const pair& src, const pair& dst) const
 {
@@ -47,19 +78,6 @@ mmap::Map::shortestPath(const pair& src, const pair& dst) const
     return msearch::aStarSearch(*this, src, dst);
 };
 
-bool mmap::Map::isValid(const pair& point) const
-{
-    return ( point.first >= 0 && point.first < width_ &&
-             point.second >= 0 && point.second < height_ );
-}
-
-bool mmap::Map::isObstacle(const pair& point) const
-{
-    size_t idx = point.second*width_ + point.first;
-    return (((*overrides_)[idx] & (OF_WATER_BASIN | OF_RIVER_MARSH)) ||
-            (*elevation_)[idx] == 0);
-}
-
 double mmap::Map::evalCost(const pair& src, const pair& dst) const
 {
     double dist = 1.0;
@@ -80,9 +98,9 @@ double mmap::Map::evalCost(const pair& src, const pair& dst) const
     // the path length increase when going uphill or downhill.
     if (elevation_diff > 0)
     {
-        cost = dist*(1.0 + elevation_diff/10.0);
+        cost = dist + dist*elevation_diff/10.0;
     } else {
-        cost = dist*(1.0 - elevation_diff/20.0);
+        cost = dist - dist*elevation_diff/20.0;
     }
 
     return cost;

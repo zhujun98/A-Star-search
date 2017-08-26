@@ -137,8 +137,7 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
 
     // Run until there is no points left in the open set.
     open_set.push(std::make_pair(0, src));
-    while (!open_set.empty())
-    {
+    while (!open_set.empty()) {
         // Pick the point in the open set with the smallest cost.
         pair pick = open_set.top().second;
         size_t pick_idx = map.getIndex(pick);
@@ -152,31 +151,24 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
         explored[pick_idx] = true;
 
         // loop over the surrounding 8 points
-        for (int i = -1; i <= 1; ++i)
+        for (const auto &pts : map.neighbors(pick))
         {
-            for (int j = -1; j <= 1; ++j)
+            size_t next_idx = map.getIndex(pts);
+
+            double new_dist = costs[pick_idx] + map.evalCost(pick, pts);
+
+            // Update smallest cost information
+            if (costs[next_idx] > new_dist)
             {
-                pair pts = std::make_pair(pick.first + i, pick.second + j);
-                if (pts != pick && map.isValid(pts) && !map.isObstacle(pts))
-                {
-                    size_t next_idx = map.getIndex(pts);
+                costs[next_idx] = new_dist;
+                came_from[next_idx] = pick;
 
-                    double new_dist = costs[pick_idx] + map.evalCost(pick, pts);
+                // Add heuristic
+                double h = 0;
+                if (!use_dijkstra) { h = heuristicDiagonal(pts, dst); }
+                double estimated_dist = new_dist + h;
 
-                    // Update smallest cost information
-                    if (costs[next_idx] > new_dist)
-                    {
-                        costs[next_idx] = new_dist;
-                        came_from[next_idx] = pick;
-
-                        // Add heuristic
-                        double h = 0;
-                        if (!use_dijkstra) { h = heuristicDiagonal(pts, dst); }
-                        double estimated_dist = new_dist + h;
-
-                        open_set.push(std::make_pair(estimated_dist, pts));
-                    }
-                }
+                open_set.push(std::make_pair(estimated_dist, pts));
             }
         }
     }
