@@ -51,7 +51,8 @@ double mmap::Map::evalCost(pair src, pair dst) const
     // The cost of one uphill grid plus two downhill grids equals to
     // that of three flat grids. The difference in penalty/award reflects
     // the path length increase when going uphill or downhill.
-    if (elevation_diff > 0) {
+    if (elevation_diff > 0)
+    {
         cost = dist*(1.0 + elevation_diff/10.0);
     } else {
         cost = dist*(1.0 - elevation_diff/20.0);

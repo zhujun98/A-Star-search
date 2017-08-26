@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <vector>
-#include <limits>
 #include <set>
 #include <stack>
 
@@ -41,7 +40,8 @@ double heuristicCost(pair src, pair dst)
  * Comparator for significantly reducing the insertion and deletion
  * in std::set.
  */
-struct cmpByCost {
+struct cmpByCost
+{
     bool operator()(const std::pair<double, pair>& a,
                     const std::pair<double, pair>& b) const
     {
@@ -65,7 +65,8 @@ struct cmpByCost {
  *          previous grid of each grid in the shortest path.
  */
 std::vector<std::pair<double, pair>>
-aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
+aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false)
+{
     // store the estimated smallest cost from source to destination
     // when the search reaches the corresponding grid
     std::set<std::pair<double, pair>, cmpByCost> remain;
@@ -150,19 +151,23 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
 std::pair<double, std::vector<bool>>
 shortestPath(const mmap::Map &map, pair src, pair dst)
 {
-    if (! map.isValid(src)) {
+    if (! map.isValid(src))
+    {
         throw std::invalid_argument("Source grid is not valid!");
     }
 
-    if (! map.isValid(dst)) {
+    if (! map.isValid(dst))
+    {
         throw std::invalid_argument("destination grid is not valid!");
     }
 
-    if (map.isObstacle(src)) {
+    if (map.isObstacle(src))
+    {
         throw std::invalid_argument("Source grid is unreachable!");
     }
 
-    if (map.isObstacle(dst)) {
+    if (map.isObstacle(dst))
+    {
         throw std::invalid_argument("destination grid is unreachable!");
     }
 

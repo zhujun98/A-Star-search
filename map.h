@@ -9,7 +9,8 @@
 #include <string>
 
 
-namespace mmap {
+namespace mmap
+{
 
 typedef std::pair<size_t, size_t> pair;
 
