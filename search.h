@@ -20,20 +20,33 @@ typedef std::pair<size_t, size_t> pair;
 
 
 /**
- * Calculate the heuristic cost between two points.
+ * Calculate the Manhattan distance between two points.
  *
  * @param src: source point
  * @param dst: destination point
  * @return: cost
  */
-double heuristicCost(pair src, pair dst)
+double heuristicManhattan(pair src, pair dst)
 {
-    double dx = (double)src.first - (double)dst.first;
-    double dy = (double)src.second - (double)dst.second;
+    double dx = std::abs((double)src.first - (double)dst.first);
+    double dy = std::abs((double)src.second - (double)dst.second);
 
-    double cost = std::sqrt(dx*dx + dy*dy);
+    return dx + dy;
+}
 
-    return cost;
+/**
+ * Calculate the Diagonal distance between two points.
+ *
+ * @param src: source point
+ * @param dst: destination point
+ * @return: cost
+ */
+double heuristicDiagonal(pair src, pair dst)
+{
+    double dx = std::abs((double)src.first - (double)dst.first);
+    double dy = std::abs((double)src.second - (double)dst.second);
+
+    return ((dx > dy) ? dx + 0.414*dy : dy + 0.414*dx);
 }
 
 /**
@@ -157,7 +170,7 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false)
 
                         // Add heuristic
                         double h = 0;
-                        if (!use_dijkstra) { h = heuristicCost(pts, dst); }
+                        if (!use_dijkstra) { h = heuristicDiagonal(pts, dst); }
                         double estimated_dist = new_dist + h;
 
                         open_set.push(std::make_pair(estimated_dist, pts));
