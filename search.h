@@ -38,6 +38,18 @@ double heuristicCost(pair src, pair dst)
 }
 
 /**
+ * Comparator for significantly reducing the insertion and deletion
+ * in std::set.
+ */
+struct cmpByCost {
+    bool operator()(const std::pair<double, pair>& a,
+                    const std::pair<double, pair>& b) const
+    {
+        return a.first < b.first;
+    }
+};
+
+/**
  * Find the shortest path using the A* algorithm.
  *
  * A self-balanced RB-tree (std::set) is used to store the unfinished
@@ -56,7 +68,7 @@ std::vector<std::pair<double, pair>>
 aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
     // store the estimated smallest cost from source to destination
     // when the search reaches the corresponding grid
-    std::set<std::pair<double, pair>> remain;
+    std::set<std::pair<double, pair>, cmpByCost> remain;
     // Store the actual smallest cost and its previous grid
     std::vector<std::pair<double, pair>> costs(map.size());
 
