@@ -6,6 +6,7 @@
 
 #include "map.h"
 #include "test/test_map.h"
+//#include "test/explore_map.h"
 #include "parameters.h"
 
 
@@ -68,9 +69,7 @@ bool donut(int x, int y, int x1, int y1)
 
 int main(int argc, char** argv)
 {
-    testUniformMap();
-    testWaterMap();
-    testFullMap();
+    testMapSearch();
 
     printf("%s\n", argv[0]);
     
@@ -79,6 +78,7 @@ int main(int argc, char** argv)
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
 
     mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
+//    maxElevationDiff(map);
 
     msearch::pair rover = std::make_pair(ROVER_X, ROVER_Y);
     msearch::pair bachelor = std::make_pair(BACHELOR_X, BACHELOR_Y);

@@ -119,4 +119,14 @@ void testFullMap()
     std::cout << "Passed!" << std::endl;
 }
 
+/**
+ * Test path search in different maps
+ */
+void testMapSearch()
+{
+    testUniformMap();
+    testWaterMap();
+    testFullMap();
+}
+
 #endif //BACHELOR_TEST_MAP_H
