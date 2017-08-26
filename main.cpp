@@ -6,7 +6,6 @@
 
 #include "map.h"
 //#include "test/test_map.h"
-//#include "test/explore_map.h"
 #include "parameters.h"
 
 
@@ -78,7 +77,6 @@ int main(int argc, char** argv)
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
 
     mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
-//    maxElevationDiff(map);
 
     typedef std::pair<size_t, size_t> pair;
     pair rover = std::make_pair(ROVER_X, ROVER_Y);
@@ -101,8 +99,8 @@ int main(int argc, char** argv)
     std::cout << "The minimum time from the bachelor to the wedding is: "
               << bachelorToWedding.first << " island seconds" << std::endl;
 
-    std::cout << "Total search time: " << 1000.0*(clock() - t0)/CLOCKS_PER_SEC
-              << " ms" << std::endl;
+    std::cout << "Total search time: "
+              << 1000.0*(clock() - t0)/CLOCKS_PER_SEC << " ms" << std::endl;
 
     std::ofstream of("pic.bmp");
     

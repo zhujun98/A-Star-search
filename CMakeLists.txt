@@ -9,7 +9,7 @@ add_executable(Bachelor
         search.h
         parameters.h
         test/test_map.h
-        test/explore_map.h)
+        )
 
 target_link_libraries(Bachelor visualizer)
 

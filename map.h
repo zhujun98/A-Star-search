@@ -32,6 +32,10 @@ private:
     // calculate the different of elevation between two points
     int elevationDiff(const pair& src, const pair& dst) const;
 
+    // find the maximum difference of elevation between two adjacent
+    // reachable points
+    void maxElevationDiff() const;
+
 public:
     // constructor
     Map(size_t width,

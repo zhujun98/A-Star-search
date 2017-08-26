@@ -17,7 +17,10 @@ mmap::Map::Map(size_t width,
     width_(width),
     height_(height),
     elevation_(&elevation),
-    overrides_(&overrides) {}
+    overrides_(&overrides)
+{
+//    maxElevationDiff();
+}
 
 mmap::Map::~Map() {}
 
@@ -122,9 +125,36 @@ int mmap::Map::elevationDiff(const pair& src, const pair& dst) const
     return (dst_elevation - src_elevation);
 }
 
-
 size_t mmap::Map::width() const { return width_; }
 
 size_t mmap::Map::height() const { return height_; }
 
 size_t mmap::Map::size() const { return width_*height_; }
+
+void mmap::Map::maxElevationDiff() const
+{
+    typedef std::pair<size_t, size_t> pair;
+
+    int max_diff = 0;
+    for ( size_t k=0; k<width_; ++k )
+    {
+        for (size_t l=0; l<height_; ++l )
+        {
+            pair pick = std::make_pair(k, l);
+            // loop over neighbor points
+            for (const auto& pts : neighbors(pick))
+            {
+                if (pts != pick && isValid(pts) && !isObstacle(pts))
+                {
+                    int elevation_diff = std::abs(elevationDiff(pick, pts));
+                    if ( elevation_diff > max_diff )
+                    {
+                        max_diff = elevation_diff;
+                    }
+                }
+            }
+        }
+    }
+
+    std::cout << "Maximum difference of elevation: " << max_diff << std::endl;
+}
