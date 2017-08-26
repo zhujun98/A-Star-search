@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <vector>
-#include <set>
+#include <queue>
 #include <stack>
 
 #include "map.h"
@@ -45,7 +45,7 @@ struct cmpByCost
     bool operator()(const std::pair<double, pair>& a,
                     const std::pair<double, pair>& b) const
     {
-        return a.first < b.first;
+        return a.first > b.first;
     }
 };
 
@@ -60,48 +60,36 @@ struct cmpByCost
  * @param src: source grid
  * @param dst: destination grid
  * @param use_dijkstra: true for degenerating to Dijkstra's algorithm.
- * @return: a vector containing a pair of the shortest distance
- *          between each grid to the source as well as the
+ * @return: a pair containing a vector of the shortest distance
+ *          between each grid to the source and a vector of the
  *          previous grid of each grid in the shortest path.
  */
-std::vector<std::pair<double, pair>>
+std::pair<std::vector<double>, std::vector<pair>>
 aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false)
 {
     // store the estimated smallest cost from source to destination
     // when the search reaches the corresponding grid
-    std::set<std::pair<double, pair>, cmpByCost> remain;
-    // Store the actual smallest cost and its previous grid
-    std::vector<std::pair<double, pair>> costs(map.size());
+    std::priority_queue<std::pair<double, pair>,
+                        std::vector<std::pair<double, pair>>,
+                        cmpByCost> remain;
 
+    // minimum cost to the source so far
+    std::vector<double> costs(map.size(), kMaxCost);
+    // the previous grid that allows to achieve the minimum cost so far
+    std::vector<pair> came_from(map.size());
     // initialization
-    for (size_t i = 0; i < map.width(); ++i)
-    {
-        for (size_t j = 0; j < map.height(); ++j)
-        {
-            size_t idx = map.getIndex(std::make_pair(i, j));
-            pair grid = std::make_pair(i, j);
-            if (grid != src)
-            {
-                remain.insert(std::make_pair(kMaxCost, grid));
-                costs[idx].first = kMaxCost;
-                // uninitialized previous grid
-            }
-            else
-            {
-                remain.insert(std::make_pair(0, src));
-                costs[idx].first = 0;
-                costs[idx].second = src;
-            }
-        }
-    }
+    size_t src_idx = map.getIndex(src);
+    costs[src_idx] = 0;
+    came_from[src_idx] = src;
 
     // Run until there is no grids left in the remain set.
+    remain.push(std::make_pair(0, src));
     while (!remain.empty())
     {
         // Pick the grid in the 'remain' set with the smallest cost.
-        pair pick = remain.begin()->second;
+        pair pick = remain.top().second;
         size_t pick_idx = map.getIndex(pick);
-        remain.erase(remain.begin());
+        remain.pop();
 
         // stop search when reach the destination
         if (pick == dst) { break; }
@@ -115,26 +103,28 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false)
                 if (pts != pick && map.isValid(pts) && !map.isObstacle(pts))
                 {
                     size_t idx = map.getIndex(pts);
-                    double new_dist = costs[pick_idx].first + map.evalCost(pick, pts);
+
+                    double new_dist = costs[pick_idx] + map.evalCost(pick, pts);
+
                     // Update smallest cost information
-                    if (costs[idx].first > new_dist)
+                    if (costs[idx] > new_dist)
                     {
-                        remain.erase(std::make_pair(costs[idx].first, pts));
-                        costs[idx].first = new_dist;
-                        costs[idx].second = pick;
+                        costs[idx] = new_dist;
+                        came_from[idx] = pick;
+
                         // Add heuristic
                         double h = 0;
                         if (!use_dijkstra) { h = heuristicCost(pts, dst); }
-
                         double estimated_dist = new_dist + h;
-                        remain.insert(std::make_pair(estimated_dist, pts));
+
+                        remain.push(std::make_pair(estimated_dist, pts));
                     }
                 }
             }
         }
     }
 
-    return costs;
+    return std::make_pair(costs, came_from);
 }
 
 /**
@@ -171,28 +161,28 @@ shortestPath(const mmap::Map &map, pair src, pair dst)
         throw std::invalid_argument("destination grid is unreachable!");
     }
 
-    std::vector<std::pair<double, pair>> costs = aStarSearch(map, src, dst);
+    std::pair<std::vector<double>, std::vector<pair>>
+        result = aStarSearch(map, src, dst);
 
-    std::stack<pair> path_tmp;
-    pair last_pts = dst;
-    path_tmp.push(dst);
+    // True if the grid is in the shortest path
+    // The space complexity is high but it facilitate the later map marking.
+    std::vector<bool> path(result.first.size(), false);
 
+    pair prev_grid = dst;
     size_t count = 0;
-    while (count++ < costs.size())
+    while (++count < result.first.size())
     {
-        last_pts = costs[last_pts.second * map.width() + last_pts.first].second;
-        path_tmp.push(last_pts);
-        if (last_pts == src) { break; }
+        size_t idx = map.getIndex(prev_grid);
+        path[idx] = true;
+        prev_grid = result.second[idx];
+        if (prev_grid == src)
+        {
+            path[map.getIndex(src)] = true;
+            break;
+        }
     }
 
-    std::vector<bool> path(map.size(), false);
-    while (!path_tmp.empty())
-    {
-        path[path_tmp.top().second * map.width() + path_tmp.top().first] = true;
-        path_tmp.pop();
-    }
-
-    return std::make_pair(costs[dst.second * map.width() + dst.first].first, path);
+    return std::make_pair(result.first[map.getIndex(dst)], path);
 };
 
 } // namespace msearch
