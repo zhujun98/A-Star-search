@@ -35,12 +35,20 @@ bool mmap::Map::isObstacle(pair grid) const
 
 double mmap::Map::evalCost(pair src, pair dst) const
 {
+    size_t src_idx = getIndex(src);
+    size_t dst_idx = getIndex(dst);
+
     double dx = (double)src.first - (double)dst.first;
     double dy = (double)src.second - (double)dst.second;
 
     double cost = std::sqrt(dx*dx + dy*dy);
 
     return cost;
+}
+
+size_t mmap::Map::getIndex(pair grid) const
+{
+    return (grid.second*width_ + grid.first);
 }
 
 size_t mmap::Map::width() const { return width_; }

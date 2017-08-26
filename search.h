@@ -54,14 +54,6 @@ double heuristicCost(pair src, pair dst)
  */
 std::vector<std::pair<double, pair>>
 aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
-    if (map.isObstacle(src)) {
-        throw std::invalid_argument("Source grid is unreachable!");
-    }
-
-    if (map.isObstacle(dst)) {
-        throw std::invalid_argument("destination grid is unreachable!");
-    }
-
     // store the estimated smallest cost from source to destination
     // when the search reaches the corresponding grid
     std::set<std::pair<double, pair>> remain;
@@ -73,7 +65,7 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
     {
         for (size_t j = 0; j < map.height(); ++j)
         {
-            size_t idx = j * map.width() + i;
+            size_t idx = map.getIndex(std::make_pair(i, j));
             pair grid = std::make_pair(i, j);
             if (grid != src)
             {
@@ -95,7 +87,7 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
     {
         // Pick the grid in the 'remain' set with the smallest cost.
         pair pick = remain.begin()->second;
-        size_t pick_idx = pick.second * map.width() + pick.first;
+        size_t pick_idx = map.getIndex(pick);
         remain.erase(remain.begin());
 
         // stop search when reach the destination
@@ -107,9 +99,9 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
             for (int j = -1; j <= 1; ++j)
             {
                 pair pts = std::make_pair(pick.first + i, pick.second + j);
-                size_t idx = pick_idx + j * map.width() + i;
                 if (pts != pick && map.isValid(pts) && !map.isObstacle(pts))
                 {
+                    size_t idx = map.getIndex(pts);
                     double new_dist = costs[pick_idx].first + map.evalCost(pick, pts);
                     // Update smallest cost information
                     if (costs[idx].first > new_dist)
@@ -146,6 +138,22 @@ aStarSearch(const mmap::Map &map, pair src, pair dst, bool use_dijkstra=false) {
 std::pair<double, std::vector<bool>>
 shortestPath(const mmap::Map &map, pair src, pair dst)
 {
+    if (! map.isValid(src)) {
+        throw std::invalid_argument("Source grid is not valid!");
+    }
+
+    if (! map.isValid(dst)) {
+        throw std::invalid_argument("destination grid is not valid!");
+    }
+
+    if (map.isObstacle(src)) {
+        throw std::invalid_argument("Source grid is unreachable!");
+    }
+
+    if (map.isObstacle(dst)) {
+        throw std::invalid_argument("destination grid is unreachable!");
+    }
+
     std::vector<std::pair<double, pair>> costs = aStarSearch(map, src, dst);
 
     std::stack<pair> path_tmp;

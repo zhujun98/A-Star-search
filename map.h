@@ -48,6 +48,9 @@ public:
 
     // get number of grids
     size_t size() const;
+
+    // get the index when the 2d array is flatten to 1D
+    size_t getIndex(pair grid) const;
 };
 
 }  // namespace mmap
