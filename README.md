@@ -48,7 +48,7 @@ Run it: ./Bachelor
   
   downhill_time_consumption = normal_time_consumption*(1 - elevation_difference/20)
   
-  Here 'elevation_difference' refers to the difference of elevation between two points. The maximum elevation difference between two reachable points is 8 in this map. The model concludes that the cost of one uphill point plus two downhill points equals to that of three flat points. The difference in uphill penalty and downhill award reflects the path length increase when going uphill or downhill.
+  Here 'elevation_difference' refers to the difference of elevation between two points. The maximum elevation difference between two adjacent reachable points is 8 in this map. The model concludes that the time consumption of one uphill point plus two downhill points equals to that of three flat points. The difference in uphill penalty and downhill award reflects the path length increase no matter if the rover goes uphill or downhill.
 
 ## Search model
 
