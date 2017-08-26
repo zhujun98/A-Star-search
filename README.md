@@ -1,4 +1,4 @@
-Bachelor Project
+# Bachelor Project
 
 Jun Zhu
 
@@ -14,8 +14,8 @@ Some definitions:
  
 - There are 2 files available containing elevation (0-255) over the ground (elevation.data) and terrain flag bitmasks (overrides.data). 
 - Here is some useful information about the bitmap values:
-1. Rivers and marsh has bit 4 set
-2. Water basins have bit 6 set.
+  1. Rivers and marsh has bit 4 set
+  2. Water basins have bit 6 set.
 - These files contain 2048x2048 8-bit byte values with each row’s columns stored in consecutive order with no row padding.
  
 Interesting left-top (x, y) coordinates
@@ -23,10 +23,23 @@ Interesting left-top (x, y) coordinates
 - The bachelor is located at 1303, 85.
 - The wedding is taking place at 1577, 1294.
 
+## Dependencies
+
+cmake >= 3.8
+
+## Build and run
+
+Make a build directory: mkdir build && cd build
+
+Compile: cmake .. && make
+
+Run it: ./Bachelor
+
+
 ## Motion model
 
 - The rover’s normal speed is 1 cell per island second. For example if the rover’s going diagonally, the time consumption is sqrt(2).
-- A simple model is used to describe the rover's speed when going uphill and downhill
+- **A simple model is used to describe the rover's speed when going uphill and downhill**
   
   v_uphill = normal_speed*(1 + elevation_difference/10)
   
@@ -37,3 +50,6 @@ Interesting left-top (x, y) coordinates
 - The rover cannot swim, nor can it crawl marshes
 - The rover’s speed is lower uphill. It’s part of the task to model in which way it becomes slower.
 - The rover’s speed gets higher when running downhill. It’s part of the task to model in which way it becomes faster.
+
+## Result
+
