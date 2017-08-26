@@ -56,4 +56,8 @@ A* search algorithm is implemented.
 
 ## Result
 
+The time consumption from the rover to the bachelor is 2221.43 island seconds.
+
+The time consumption from the bachelor to the wedding is 1346.36 island seconds.
+
 ![](output/output.png)
