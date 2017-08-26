@@ -50,8 +50,6 @@ void testUniformMap()
     std::pair<double, std::vector<bool>>
         path = msearch::shortestPath(map, std::make_pair(0, 0), std::make_pair(3, 1));
 
-    display(path, width);
-
     assert(std::abs(path.first - 3.41421) < 1.0e-5 );
     assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 4);
     std::cout << "Passed!" << std::endl;
@@ -90,33 +88,34 @@ void testWaterMap()
  *  Run test on a map with river marsh and water basin as well as
  *  variable elevations.
  *
- *   0x01 0x01 0xFF 0x01
- *   0x24 0x10    R 0x01
- *   0x01    W 0x01 0x01
+ *   0x01 0x02 0x02 0x04 0x08 0x04
+ *   0x02    R 0x08    W    W 0x02
+ *   0x04 0x02 0x01    W    W 0x01
+ *   0x02 0x04 0x04 0x02 0x02 0x01
  */
 void testFullMap()
 {
-    size_t width = 4;
-    size_t height = 3;
-    std::vector<uint8_t> elevation(width*height, 0x01);
-    std::vector<uint8_t> overrides(width*height, 0x20);
+    size_t width = 6;
+    size_t height = 4;
+    std::vector<uint8_t> elevation {0x01, 0x02, 0x02, 0x04, 0x08, 0x04,
+                                    0x02, 0xFF, 0x08, 0xFF, 0xFF, 0x02,
+                                    0x04, 0x02, 0x01, 0xFF, 0xFF, 0x01,
+                                    0x02, 0x04, 0x04, 0x02, 0x01, 0x01};
 
-    overrides[6] = 0x10;
-    overrides[9] = 0x40;
-
-    elevation[2] = 0xFF;
-    elevation[4] = 0x24;
-    elevation[5] = 0x10;
+    std::vector<uint8_t> overrides {0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
+                                    0x20, 0x10, 0x20, 0x40, 0x40, 0x20,
+                                    0x20, 0x20, 0x20, 0x40, 0x40, 0x20,
+                                    0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
 
     mmap::Map map(width, height, elevation, overrides);
 
     std::pair<double, std::vector<bool>>
-        path = msearch::shortestPath(map, std::make_pair(0, 0), std::make_pair(3, 1));
+        path = msearch::shortestPath(map, std::make_pair(0, 0), std::make_pair(5, 3));
 
-    //    display(path, width);
+//    display(path, width);
 
-    assert(std::abs(path.first - 3.41421) < 1.0e-5 );
-    assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 4);
+    assert(std::abs(path.first - 7.11985) < 1.0e-5 );
+    assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 7);
     std::cout << "Passed!" << std::endl;
 }
 

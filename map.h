@@ -37,8 +37,11 @@ public:
     // check whether a grid is an obstacle (water, marsh)
     bool isObstacle(pair grid) const;
 
-    // calculate the cost between two grids
+    // calculate the cost between two adjacent grids
     double evalCost(pair src, pair dst) const;
+
+    // calculate the different of elevation between two grids
+    int elevationDiff(pair src, pair dst) const;
 
     // get width of the map
     size_t width() const;
@@ -51,6 +54,7 @@ public:
 
     // get the index when the 2d array is flatten to 1D
     size_t getIndex(pair grid) const;
+
 };
 
 }  // namespace mmap
