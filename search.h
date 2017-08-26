@@ -26,7 +26,7 @@ typedef std::pair<size_t, size_t> pair;
  * @param dst: destination point
  * @return: cost
  */
-double heuristicManhattan(const pair& src, const pair& dst)
+inline double heuristicManhattan(const pair& src, const pair& dst)
 {
     double dx = std::abs((double)src.first - (double)dst.first);
     double dy = std::abs((double)src.second - (double)dst.second);
@@ -41,7 +41,7 @@ double heuristicManhattan(const pair& src, const pair& dst)
  * @param dst: destination point
  * @return: cost
  */
-double heuristicDiagonal(const pair& src, const pair& dst)
+inline double heuristicDiagonal(const pair& src, const pair& dst)
 {
     double dx = std::abs((double)src.first - (double)dst.first);
     double dy = std::abs((double)src.second - (double)dst.second);
@@ -54,7 +54,7 @@ double heuristicDiagonal(const pair& src, const pair& dst)
  */
 struct cmpByCost
 {
-    bool operator()(const std::pair<double, pair>& a,
+    inline bool operator()(const std::pair<double, pair>& a,
                     const std::pair<double, pair>& b) const
     {
         return a.first > b.first;
