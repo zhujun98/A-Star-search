@@ -92,16 +92,16 @@ int main(int argc, char** argv)
         roverToBachelor = map.shortestPath(rover, bachelor);
 
     std::cout << "The minimum time from the rover to the bachelor is: "
-              << roverToBachelor.first << std::endl;
+              << roverToBachelor.first << " island seconds" << std::endl;
 
     // shortest path from bachelor to wedding
     std::pair<double, std::vector<bool>>
         bachelorToWedding = map.shortestPath(bachelor, wedding);
 
     std::cout << "The minimum time from the bachelor to the wedding is: "
-              << bachelorToWedding.first << std::endl;
+              << bachelorToWedding.first << " island seconds" << std::endl;
 
-    std::cout << "Search time: " << 1000.0*(clock() - t0)/CLOCKS_PER_SEC
+    std::cout << "Total search time: " << 1000.0*(clock() - t0)/CLOCKS_PER_SEC
               << " ms" << std::endl;
 
     std::ofstream of("pic.bmp");
