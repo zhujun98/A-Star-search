@@ -20,24 +20,25 @@ class Map {
 private:
     const size_t width_; // width of the map
     const size_t height_; // height of the map
-    // pointer to elevation.
-    // elevation is a vector storing the elevation of each point
+    // pointer to elevation, which is a vector storing the elevation
+    // of each point
     const std::vector<uint8_t>* const elevation_;
-    // pointer to obstacles
-    // blocks if a vector marking whether each point is an obstacle
+    // pointer to obstacles which is a vector marking whether each
+    // point is an obstacle
     const std::vector<bool>* const obstacles_;
 
     // check whether a point belongs to the map
     bool isValid(const pair& point) const;
 
-    // check whether a point is an obstacle (water, marsh)
+    // check whether a point is an obstacle or not
     bool isObstacle(const pair& point) const;
 
-    // calculate the different of elevation between two points
+    // calculate the difference of elevation between two points
     int elevationDiff(const pair& src, const pair& dst) const;
 
     // calculate the cost between two adjacent points
-    // Assume both src and dst are drivable (not obstacles)!!!
+    //
+    // Assume src and dst are adjacent and both drivable!!!
     double evalCost(const pair& src, const pair& dst) const;
 
     // find the maximum difference of elevation between two adjacent
@@ -74,7 +75,8 @@ public:
 
     // return the valid neighbor points of the source and the costs
     // between the neighbors and the source.
-    // use std::array as container for speed.
+    //
+    // use std::array as container for speed
     std::array<std::pair<pair, double>, 8> neighbors(const pair& src) const;
 
     // get width of the map

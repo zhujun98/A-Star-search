@@ -90,6 +90,7 @@ int main(int argc, char** argv)
     auto elevation = loadFile("assets/elevation.data", expectedFileSize);
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
 
+    // simplify overrides to a vector indicating obstacle or non-obstacle
     std::vector<bool> obstacles(overrides.size(), false);
     for ( size_t i=0; i < overrides.size(); ++i)
     {

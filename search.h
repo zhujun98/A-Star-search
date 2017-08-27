@@ -63,7 +63,6 @@ reconstructPath(const mmap::Map &map,
                 const pair& src,
                 const pair& dst)
 {
-    // True if the point is in the shortest path
     // The space complexity is high but it facilitate the later map marking.
     std::vector<bool> path(came_from.size(), false);
 
