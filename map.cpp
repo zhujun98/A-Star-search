@@ -31,25 +31,31 @@ bool mmap::Map::isValid(const pair& point) const
 
 bool mmap::Map::isObstacle(const pair& point) const
 {
-    size_t idx = point.second*width_ + point.first;
-
-    return (*obstacles_)[idx];
+    return (*obstacles_)[point.second*width_ + point.first];
 }
 
-std::deque<std::pair<mmap::pair, double>>
+std::array<std::pair<mmap::pair, double>, 8>
 mmap::Map::neighbors(const pair& src) const
 {
-    std::deque<std::pair<pair, double>> neighbors;
+    std::array<std::pair<pair, double>, 8> neighbors;
+    int count = 0;
     for (int i = -1; i <= 1; ++i)
     {
         for (int j = -1; j <= 1; ++j)
         {
             pair pts = std::make_pair(src.first + i, src.second + j);
-            if (pts != src && isValid(pts) && !isObstacle(pts))
+            if (pts == src) { continue; }
+            double cost;
+            if (!isValid(pts) || isObstacle(pts))
             {
-                double cost = evalCost(src, pts);
-                neighbors.emplace_back(std::make_pair(pts, cost));
+                cost = 1.0e6; // large value for unconnected two points
             }
+            else
+            {
+                cost = evalCost(src, pts);
+            }
+            neighbors[count] = std::make_pair(pts, cost);
+            ++count;
         }
     }
 

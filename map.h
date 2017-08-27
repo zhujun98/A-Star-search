@@ -6,8 +6,8 @@
 #define BACHELOR_MAP_H
 
 #include <iostream>
-#include <deque>
 #include <vector>
+#include <array>
 
 
 namespace mmap
@@ -37,6 +37,7 @@ private:
     int elevationDiff(const pair& src, const pair& dst) const;
 
     // calculate the cost between two adjacent points
+    // Assume both src and dst are drivable (not obstacles)!!!
     double evalCost(const pair& src, const pair& dst) const;
 
     // find the maximum difference of elevation between two adjacent
@@ -72,8 +73,9 @@ public:
                  double w1=1.0, double w2=1.0, bool verbose=true) const;
 
     // return the valid neighbor points of the source and the costs
-    // between the neighbors and the source
-    std::deque<std::pair<pair, double>> neighbors(const pair& src) const;
+    // between the neighbors and the source.
+    // use std::array as container for speed.
+    std::array<std::pair<pair, double>, 8> neighbors(const pair& src) const;
 
     // get width of the map
     size_t width() const;

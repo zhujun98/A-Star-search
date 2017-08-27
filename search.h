@@ -154,10 +154,8 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
             {
                 costs[next_idx] = new_dist;
                 came_from[next_idx] = pick;
-
                 // Add heuristic
                 double h = heuristicDiagonal(v.first, dst)*w2;
-
                 open_set.push(std::make_pair(new_dist*w1 + h, v.first));
             }
         }
