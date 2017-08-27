@@ -1,11 +1,9 @@
 #include "visualizer.h"
 #include <iostream>
 #include <fstream>
-#include <assert.h>
 #include <algorithm>
 
 #include "map.h"
-//#include "test/test_map.h"
 #include "parameters.h"
 
 
@@ -73,8 +71,6 @@ int main(int argc, char** argv)
     const size_t expectedFileSize = IMAGE_DIM * IMAGE_DIM;
     auto elevation = loadFile("assets/elevation.data", expectedFileSize);
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
-
-    //    testMapSearch();
 
     mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
 

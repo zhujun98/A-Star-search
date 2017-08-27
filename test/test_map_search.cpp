@@ -2,9 +2,6 @@
 // Test Map class and A* search.
 //
 
-#ifndef BACHELOR_TEST_MAP_H
-#define BACHELOR_TEST_MAP_H
-
 #include <iostream>
 #include <assert.h>
 #include <algorithm>
@@ -123,11 +120,9 @@ void testFullMap()
 /**
  * Test path search in different maps
  */
-void testMapSearch()
+int main()
 {
     testUniformMap();
     testWaterMap();
     testFullMap();
 }
-
-#endif //BACHELOR_TEST_MAP_H
