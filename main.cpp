@@ -68,13 +68,13 @@ bool donut(int x, int y, int x1, int y1)
 
 int main(int argc, char** argv)
 {
-//    testMapSearch();
-
     printf("%s\n", argv[0]);
-    
+
     const size_t expectedFileSize = IMAGE_DIM * IMAGE_DIM;
     auto elevation = loadFile("assets/elevation.data", expectedFileSize);
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
+
+    //    testMapSearch();
 
     mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
 
@@ -93,7 +93,7 @@ int main(int argc, char** argv)
         // shortest path from rover to bachelor
         rover_to_bachelor = map.shortestPath(rover, bachelor);
         found_bachelor = true;
-        std::cout << "The minimum time from the rover to the bachelor is: "
+        std::cout << "The minimum time consumption: "
                   << rover_to_bachelor.first << " island seconds" << std::endl;
     }
     catch (const std::exception& ia)
@@ -109,7 +109,7 @@ int main(int argc, char** argv)
         // shortest path from bachelor to wedding
         bachelor_to_wedding = map.shortestPath(bachelor, wedding);
         found_wedding = true;
-        std::cout << "The minimum time from the bachelor to the wedding is: "
+        std::cout << "The minimum time consumption: "
                   << bachelor_to_wedding.first << " island seconds" << std::endl;
 
     }
@@ -128,8 +128,8 @@ int main(int argc, char** argv)
         &elevation[0],
         IMAGE_DIM,
         IMAGE_DIM,
-        [&] (size_t x, size_t y, uint8_t elevation) {
-        
+        [&] (size_t x, size_t y, uint8_t elevation)
+        {
             // Marks interesting positions on the map
             if (donut(x, y, ROVER_X, ROVER_Y) ||
                 donut(x, y, BACHELOR_X, BACHELOR_Y) ||

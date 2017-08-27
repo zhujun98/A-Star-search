@@ -125,13 +125,13 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
     std::priority_queue<std::pair<double, pair>,
                         std::vector<std::pair<double, pair>>,
                         cmpByCost> open_set;
-
     // actual minimum cost to the source so far
     std::vector<double> costs(map.size(), kMaxCost);
     // the previous point that allows to achieve the minimum cost so far
     std::vector<pair> came_from(map.size());
     // mark the explored point
     std::vector<bool> explored(map.size(), false);
+
     // initialization
     size_t src_idx = map.getIndex(src);
     costs[src_idx] = 0;
@@ -139,7 +139,8 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
 
     // Run until there is no points left in the open set.
     open_set.push(std::make_pair(0, src));
-    while (!open_set.empty()) {
+    while (!open_set.empty())
+    {
         // Pick the point in the open set with the smallest cost.
         pair pick = open_set.top().second;
         size_t pick_idx = map.getIndex(pick);
@@ -160,9 +161,7 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
         for (const auto &pts : map.neighbors(pick))
         {
             size_t next_idx = map.getIndex(pts);
-
             double new_dist = costs[pick_idx] + map.evalCost(pick, pts);
-
             // Update smallest cost information
             if (costs[next_idx] > new_dist)
             {
@@ -183,7 +182,6 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
                     }
                 }
                 double estimated_dist = new_dist + h;
-
                 open_set.push(std::make_pair(estimated_dist, pts));
             }
         }

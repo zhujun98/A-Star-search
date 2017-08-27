@@ -33,6 +33,7 @@ bool mmap::Map::isValid(const pair& point) const
 bool mmap::Map::isObstacle(const pair& point) const
 {
     size_t idx = point.second*width_ + point.first;
+
     return (((*overrides_)[idx] & (OF_WATER_BASIN | OF_RIVER_MARSH)) ||
             (*elevation_)[idx] == 0);
 }
@@ -62,7 +63,6 @@ mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) cons
     {
         throw std::out_of_range("Out of range: source!");
     }
-
     if (! isValid(dst))
     {
         throw std::out_of_range("Out of range: destination!");
@@ -72,7 +72,6 @@ mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) cons
     {
         throw std::invalid_argument("Invalid_argument: source unreachable!");
     }
-
     if (isObstacle(dst))
     {
         throw std::invalid_argument("Invalid_argument: destination unreachable!");
@@ -96,11 +95,11 @@ double mmap::Map::evalCost(const pair& src, const pair& dst) const
                   << "is larger than 20! " << std::endl;
     }
 
-    double cost;
     // The cost of one uphill point plus two downhill points equals to
     // that of three flat points. The difference in penalty/award
     // reflects the path length increase no matter if the rover goes
     // uphill or downhill.
+    double cost;
     if (elevation_diff > 0)
     {
         cost = dist + dist*elevation_diff/10.0;
