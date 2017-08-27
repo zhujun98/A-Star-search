@@ -20,18 +20,18 @@ typedef std::pair<size_t, size_t> pair;
 
 
 /**
- * Calculate the Diagonal distance between two points.
+ * Calculate the Octile distance between two points.
  *
  * @param src: source point
  * @param dst: destination point
  * @return: cost
  */
-inline double heuristicDiagonal(const pair& src, const pair& dst)
+inline double heuristicOctile(const pair& src, const pair& dst)
 {
     double dx = std::abs((double)src.first - (double)dst.first);
     double dy = std::abs((double)src.second - (double)dst.second);
 
-    return ((dx > dy) ? dx + 0.414*dy : dy + 0.414*dx);
+    return ((dx > dy) ? dx + 0.414213562*dy : dy + 0.414213562*dx);
 }
 
 /**
@@ -155,7 +155,7 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
                 costs[next_idx] = new_dist;
                 came_from[next_idx] = pick;
                 // Add heuristic
-                double h = heuristicDiagonal(v.first, dst)*w2;
+                double h = heuristicOctile(v.first, dst)*w2;
                 open_set.push(std::make_pair(new_dist*w1 + h, v.first));
             }
         }
