@@ -56,13 +56,18 @@ public:
      * @param map: Map object
      * @param src: source point
      * @param dst: destination point
+     * @param fast_search: true for fast search but the result path maybe
+     *                     longer than the actual shortest path; false for
+     *                     guaranteed shortest path if it exists.
+     * @param verbose: true for print out message
      * @return: a pair with the first element being the cost of the shortest
      *          path and the second element being a 1D vector similar to
      *          elevation and overrides with the point in the shortest path
      *          marked "true".
      */
     std::pair<double, std::vector<bool>>
-    shortestPath(const pair& src, const pair& dst, bool fast_search=false) const;
+    shortestPath(const pair& src, const pair& dst, bool fast_search=false,
+                 bool verbose=true) const;
 
     // calculate the cost between two adjacent points
     double evalCost(const pair& src, const pair& dst) const;

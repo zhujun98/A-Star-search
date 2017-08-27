@@ -60,7 +60,8 @@ std::deque<mmap::pair> mmap::Map::neighbors(const pair& src) const
 }
 
 std::pair<double, std::vector<bool>>
-mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) const
+mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search,
+                        bool verbose) const
 {
     if (! isValid(src))
     {
@@ -82,8 +83,11 @@ mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) cons
 
     auto result = msearch::aStarSearch(*this, src, dst, fast_search);
 
-    std::cout << "The minimum time consumption: "
-              << result.first << " island seconds" << std::endl;
+    if (verbose)
+    {
+        std::cout << "The minimum time consumption: "
+                  << result.first << " island seconds" << std::endl;
+    }
 
     return result;
 };

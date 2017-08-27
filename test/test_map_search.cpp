@@ -53,7 +53,7 @@ void testUniformMap()
                   OF_RIVER_MARSH, OF_WATER_BASIN);
 
     std::pair<double, std::vector<bool>>
-        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1));
+        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1), 0, 0);
 
 //    display(path, width);
 
@@ -85,7 +85,7 @@ void testWaterMap()
                   OF_RIVER_MARSH, OF_WATER_BASIN);
 
     std::pair<double, std::vector<bool>>
-        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1));
+        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1), 0, 0);
 
     assert(std::abs(path.first - 4.82843) < 1.0e-5 );
     assert(std::accumulate(path.second.begin(), path.second.end(), 0) == 5);
@@ -119,7 +119,7 @@ void testFullMap()
                   OF_RIVER_MARSH, OF_WATER_BASIN);
 
     std::pair<double, std::vector<bool>>
-        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(5, 3));
+        path = map.shortestPath(std::make_pair(0, 0), std::make_pair(5, 3), 0, 0);
 
 //    display(path, width);
 
