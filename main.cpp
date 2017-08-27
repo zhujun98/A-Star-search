@@ -90,8 +90,16 @@ int main(int argc, char** argv)
     auto elevation = loadFile("assets/elevation.data", expectedFileSize);
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
 
-    mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides,
-                  OF_RIVER_MARSH, OF_WATER_BASIN);
+    std::vector<bool> obstacles(overrides.size(), false);
+    for ( size_t i=0; i < overrides.size(); ++i)
+    {
+        if ((overrides[i] & (OF_WATER_BASIN | OF_RIVER_MARSH)) || elevation[i] == 0)
+        {
+            obstacles[i] = true;
+        }
+    }
+
+    mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, obstacles);
 
     typedef std::pair<size_t, size_t> pair;
     pair rover = std::make_pair(ROVER_X, ROVER_Y);

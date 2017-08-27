@@ -12,15 +12,11 @@
 mmap::Map::Map(size_t width,
                size_t height,
                const std::vector<uint8_t>& elevation,
-               const std::vector<uint8_t>& overrides,
-               const uint8_t of_river_marsh,
-               const uint8_t of_water_basin) :
+               const std::vector<bool>& obstacles) :
     width_(width),
     height_(height),
     elevation_(&elevation),
-    overrides_(&overrides),
-    of_river_marsh_(of_river_marsh),
-    of_water_basin_(of_water_basin)
+    obstacles_(&obstacles)
 {
 //    maxElevationDiff();
 }
@@ -37,8 +33,7 @@ bool mmap::Map::isObstacle(const pair& point) const
 {
     size_t idx = point.second*width_ + point.first;
 
-    return (((*overrides_)[idx] & (of_water_basin_ | of_river_marsh_)) ||
-            (*elevation_)[idx] == 0);
+    return (*obstacles_)[idx];
 }
 
 std::deque<mmap::pair> mmap::Map::neighbors(const pair& src) const

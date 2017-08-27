@@ -8,13 +8,6 @@
 #include <vector>
 #include "../map.h"
 
-// Bits used in the overrides image bytes
-enum OverrideFlags
-{
-    OF_RIVER_MARSH = 0x10,
-    OF_INLAND = 0x20,
-    OF_WATER_BASIN = 0x40
-};
 
 /**
  * Summarize the shorted path
@@ -47,10 +40,9 @@ void testUniformMap()
     size_t width = 4;
     size_t height = 3;
     std::vector<uint8_t> elevation(width*height, 0x01);
-    std::vector<uint8_t> overrides(width*height, 0x20);
+    std::vector<bool> obstacles(width*height, false);
 
-    mmap::Map map(width, height, elevation, overrides,
-                  OF_RIVER_MARSH, OF_WATER_BASIN);
+    mmap::Map map(width, height, elevation, obstacles);
 
     std::pair<double, std::vector<bool>>
         path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1), 0, 0);
@@ -66,8 +58,8 @@ void testUniformMap()
 /**
  *  Run test on a map with river marsh and water basin
  *
- *   1  R  1  1
- *   1  W  R  1
+ *   1  O  1  1
+ *   1  O  O  1
  *   1  1  1  1
  */
 void testWaterMap()
@@ -75,14 +67,13 @@ void testWaterMap()
     size_t width = 4;
     size_t height = 3;
     std::vector<uint8_t> elevation(width*height, 0x01);
-    std::vector<uint8_t> overrides(width*height, 0x20);
+    std::vector<bool> obstacles(width*height, false);
 
-    overrides[1] = 0x10;
-    overrides[5] = 0x40;
-    overrides[6] = 0x10;
+    obstacles[1] = true;
+    obstacles[5] = true;
+    obstacles[6] = true;
 
-    mmap::Map map(width, height, elevation, overrides,
-                  OF_RIVER_MARSH, OF_WATER_BASIN);
+    mmap::Map map(width, height, elevation, obstacles);
 
     std::pair<double, std::vector<bool>>
         path = map.shortestPath(std::make_pair(0, 0), std::make_pair(3, 1), 0, 0);
@@ -110,13 +101,12 @@ void testFullMap()
                                     0x04, 0x02, 0x01, 0xFF, 0xFF, 0x01,
                                     0x02, 0x04, 0x04, 0x02, 0x01, 0x01};
 
-    std::vector<uint8_t> overrides {0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-                                    0x20, 0x10, 0x20, 0x40, 0x40, 0x20,
-                                    0x20, 0x20, 0x20, 0x40, 0x40, 0x20,
-                                    0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
+    std::vector<bool> obstacles {0, 0, 0, 0, 0, 0,
+                                 0, 1, 0, 1, 1, 0,
+                                 0, 0, 0, 1, 1, 0,
+                                 0, 0, 0, 0, 0, 0};
 
-    mmap::Map map(width, height, elevation, overrides,
-                  OF_RIVER_MARSH, OF_WATER_BASIN);
+    mmap::Map map(width, height, elevation, obstacles);
 
     std::pair<double, std::vector<bool>>
         path = map.shortestPath(std::make_pair(0, 0), std::make_pair(5, 3), 0, 0);
