@@ -22,6 +22,8 @@ private:
     const size_t height_; // height of the map
     const std::vector<uint8_t>* const elevation_; // pointer to elevation
     const std::vector<uint8_t>* const overrides_; // pointer to overrides
+    const uint8_t of_river_marsh_; // mark for river marsh
+    const uint8_t of_water_basin_; // mark for water basin
 
     // check whether a point belongs to the map
     bool isValid(const pair& point) const;
@@ -41,7 +43,9 @@ public:
     Map(size_t width,
         size_t height,
         const std::vector<uint8_t>& elevation,
-        const std::vector<uint8_t>& overrides);
+        const std::vector<uint8_t>& overrides,
+        uint8_t of_river_marsh,
+        uint8_t of_water_basin);
 
     // destructor
     ~Map();

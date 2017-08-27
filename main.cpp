@@ -4,8 +4,26 @@
 #include <algorithm>
 
 #include "map.h"
-#include "parameters.h"
 
+// Bits used in the overrides image bytes
+enum OverrideFlags
+{
+    OF_RIVER_MARSH = 0x10,
+    OF_INLAND = 0x20,
+    OF_WATER_BASIN = 0x40
+};
+
+// Some constants
+enum {
+    IMAGE_DIM = 2048, // Width and height of the elevation and overrides image
+
+    ROVER_X = 159,
+    ROVER_Y = 1520,
+    BACHELOR_X = 1303,
+    BACHELOR_Y = 85,
+    WEDDING_X = 1577,
+    WEDDING_Y = 1294
+};
 
 /**
  * Get the file size
@@ -72,7 +90,8 @@ int main(int argc, char** argv)
     auto elevation = loadFile("assets/elevation.data", expectedFileSize);
     auto overrides = loadFile("assets/overrides.data", expectedFileSize);
 
-    mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides);
+    mmap::Map map(IMAGE_DIM, IMAGE_DIM, elevation, overrides,
+                  OF_RIVER_MARSH, OF_WATER_BASIN);
 
     typedef std::pair<size_t, size_t> pair;
     pair rover = std::make_pair(ROVER_X, ROVER_Y);
