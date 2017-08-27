@@ -20,21 +20,6 @@ typedef std::pair<size_t, size_t> pair;
 
 
 /**
- * Calculate the Manhattan distance between two points.
- *
- * @param src: source point
- * @param dst: destination point
- * @return: cost
- */
-inline double heuristicManhattan(const pair& src, const pair& dst)
-{
-    double dx = std::abs((double)src.first - (double)dst.first);
-    double dy = std::abs((double)src.second - (double)dst.second);
-
-    return dx + dy;
-}
-
-/**
  * Calculate the Diagonal distance between two points.
  *
  * @param src: source point
@@ -106,10 +91,10 @@ reconstructPath(const mmap::Map &map,
  * @param map: Map object
  * @param src: source point
  * @param dst: destination point
- * @param fast_search: true for fast search but the result path maybe
- *                     longer than the actual shortest path; false for
- *                     guaranteed shortest path if it exists.
- * @param use_dijkstra: true for degenerating to Dijkstra's algorithm.
+ * @param w1: weight for ground-truth cost (default 1.0)
+ * @param w2: weight for heuristic cost (default 1.0)
+ *            Note: set w1 = 1.0, w2 = 0.0 to use the Dijkstra's algorithm
+ *                  set w1 = 0.0, w2 = 1.0 to use the pure heuristic search
  * @return: a pair with the first element being the cost of the shortest
  *          path and the second element being a 1D vector similar to
  *          elevation and overrides with the point in the shortest path
@@ -118,7 +103,7 @@ reconstructPath(const mmap::Map &map,
  */
 std::pair<double, std::vector<bool>>
 aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
-            bool fast_search, bool use_dijkstra=false)
+            double w1=1.0, double w2=1.0)
 {
     // The first element is the actual cost from source to the current
     // point plus the estimated cost from the current point to the
@@ -171,20 +156,9 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
                 came_from[next_idx] = pick;
 
                 // Add heuristic
-                double h = 0;
-                if (!use_dijkstra)
-                {
-                    if (fast_search)
-                    {
-                        h = heuristicManhattan(pts, dst);
-                    }
-                    else
-                    {
-                        h = heuristicDiagonal(pts, dst);
-                    }
-                }
-                double estimated_dist = new_dist + h;
-                open_set.push(std::make_pair(estimated_dist, pts));
+                double h = heuristicDiagonal(pts, dst)*w2;
+
+                open_set.push(std::make_pair(new_dist*w1 + h, pts));
             }
         }
     }
