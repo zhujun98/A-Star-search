@@ -46,9 +46,9 @@ Run it: ./Bachelor
   
   uphill_time_consumption = normal_time_consumption*(1 + elevation_difference/10)
   
-  downhill_time_consumption = normal_time_consumption*(1 - elevation_difference/20)
+  downhill_time_consumption = normal_time_consumption*(1 - elevation_difference/21)
   
-  Here 'elevation_difference' refers to the difference of elevation between two points. The maximum elevation difference between two adjacent reachable points is 8 in this map. The model concludes that the time consumption of one uphill point plus two downhill points equals to that of three flat points. The difference in uphill penalty and downhill award reflects the path length increase no matter if the rover goes uphill or downhill.
+  Here 'elevation_difference' refers to the difference of elevation between two points. The maximum elevation difference between two adjacent reachable points is 8 in this map. Since the path length will increase no matter the rover goes uphill or downhill, The uphill time consumption is penalized more than the downhill time consumptin is awarded. The model concludes that the time consumption of one uphill point plus two downhill points is slightly longer than that of three flat points. Therefore, in most cases, the rover will choose flat terrain. 
 
 ## Search model
 
@@ -56,8 +56,8 @@ A* search algorithm is implemented.
 
 ## Result
 
-The time consumption from the rover to the bachelor is 2221.43 island seconds.
+The time consumption from the rover to the bachelor is 2220.57 island seconds.
 
-The time consumption from the bachelor to the wedding is 1346.36 island seconds.
+The time consumption from the bachelor to the wedding is 1345.98 island seconds.
 
 ![](output/output.png)
