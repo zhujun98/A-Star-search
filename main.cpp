@@ -153,6 +153,12 @@ int main(int argc, char** argv)
             }
             return elevation;
     });
-    system("open pic.bmp");
+
+    #ifdef __unix__
+        std::cout << "Image file pic.bmp saved!" << std::endl;
+    #else
+        system("open pic.bmp");
+    #endif
+
     return 0;
 }
