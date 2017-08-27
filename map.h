@@ -36,6 +36,9 @@ private:
     // calculate the different of elevation between two points
     int elevationDiff(const pair& src, const pair& dst) const;
 
+    // calculate the cost between two adjacent points
+    double evalCost(const pair& src, const pair& dst) const;
+
     // find the maximum difference of elevation between two adjacent
     // reachable points
     void maxElevationDiff() const;
@@ -68,11 +71,9 @@ public:
     shortestPath(const pair& src, const pair& dst,
                  double w1=1.0, double w2=1.0, bool verbose=true) const;
 
-    // calculate the cost between two adjacent points
-    double evalCost(const pair& src, const pair& dst) const;
-
-    // return the valid neighbor points of the source
-    std::deque<pair> neighbors(const pair& src) const;
+    // return the valid neighbor points of the source and the costs
+    // between the neighbors and the source
+    std::deque<std::pair<pair, double>> neighbors(const pair& src) const;
 
     // get width of the map
     size_t width() const;

@@ -145,10 +145,10 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
         explored[pick_idx] = true;
 
         // loop over neighbor points
-        for (const auto &pts : map.neighbors(pick))
+        for (const auto &v : map.neighbors(pick))
         {
-            size_t next_idx = map.getIndex(pts);
-            double new_dist = costs[pick_idx] + map.evalCost(pick, pts);
+            size_t next_idx = map.getIndex(v.first);
+            double new_dist = costs[pick_idx] + v.second;
             // Update smallest cost information
             if (costs[next_idx] > new_dist)
             {
@@ -156,9 +156,9 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
                 came_from[next_idx] = pick;
 
                 // Add heuristic
-                double h = heuristicDiagonal(pts, dst)*w2;
+                double h = heuristicDiagonal(v.first, dst)*w2;
 
-                open_set.push(std::make_pair(new_dist*w1 + h, pts));
+                open_set.push(std::make_pair(new_dist*w1 + h, v.first));
             }
         }
     }

@@ -36,9 +36,10 @@ bool mmap::Map::isObstacle(const pair& point) const
     return (*obstacles_)[idx];
 }
 
-std::deque<mmap::pair> mmap::Map::neighbors(const pair& src) const
+std::deque<std::pair<mmap::pair, double>>
+mmap::Map::neighbors(const pair& src) const
 {
-    std::deque<pair> neighbors;
+    std::deque<std::pair<pair, double>> neighbors;
     for (int i = -1; i <= 1; ++i)
     {
         for (int j = -1; j <= 1; ++j)
@@ -46,7 +47,8 @@ std::deque<mmap::pair> mmap::Map::neighbors(const pair& src) const
             pair pts = std::make_pair(src.first + i, src.second + j);
             if (pts != src && isValid(pts) && !isObstacle(pts))
             {
-                neighbors.push_back(pts);
+                double cost = evalCost(src, pts);
+                neighbors.emplace_back(std::make_pair(pts, cost));
             }
         }
     }
@@ -150,11 +152,11 @@ void mmap::Map::maxElevationDiff() const
         {
             pair pick = std::make_pair(k, l);
             // loop over neighbor points
-            for (const auto& pts : neighbors(pick))
+            for (const auto& v : neighbors(pick))
             {
-                if (pts != pick && isValid(pts) && !isObstacle(pts))
+                if (v.first != pick && isValid(v.first) && !isObstacle(v.first))
                 {
-                    int elevation_diff = std::abs(elevationDiff(pick, pts));
+                    int elevation_diff = std::abs(elevationDiff(pick, v.first));
                     if ( elevation_diff > max_diff )
                     {
                         max_diff = elevation_diff;
