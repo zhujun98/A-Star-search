@@ -89,8 +89,6 @@ int main(int argc, char** argv)
         // shortest path from rover to bachelor
         rover_to_bachelor = map.shortestPath(rover, bachelor);
         found_bachelor = true;
-        std::cout << "The minimum time consumption: "
-                  << rover_to_bachelor.first << " island seconds" << std::endl;
     }
     catch (const std::exception& ia)
     {
@@ -105,9 +103,6 @@ int main(int argc, char** argv)
         // shortest path from bachelor to wedding
         bachelor_to_wedding = map.shortestPath(bachelor, wedding);
         found_wedding = true;
-        std::cout << "The minimum time consumption: "
-                  << bachelor_to_wedding.first << " island seconds" << std::endl;
-
     }
     catch (const std::exception& ia)
     {
@@ -134,12 +129,11 @@ int main(int argc, char** argv)
                 return uint8_t(visualizer::IPV_PATH);
             }
 
-            // Mark the path
+            // Mark the path if found
             if (found_bachelor && rover_to_bachelor.second[y * IMAGE_DIM + x])
             {
                 return uint8_t(visualizer::IPV_PATH);
             }
-
             if (found_wedding && bachelor_to_wedding.second[y * IMAGE_DIM + x])
             {
                 return uint8_t(visualizer::IPV_PATH);

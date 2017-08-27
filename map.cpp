@@ -77,7 +77,12 @@ mmap::Map::shortestPath(const pair& src, const pair& dst, bool fast_search) cons
         throw std::invalid_argument("Invalid_argument: destination unreachable!");
     }
 
-    return msearch::aStarSearch(*this, src, dst, fast_search);
+    auto result = msearch::aStarSearch(*this, src, dst, fast_search);
+
+    std::cout << "The minimum time consumption: "
+              << result.first << " island seconds" << std::endl;
+
+    return result;
 };
 
 double mmap::Map::evalCost(const pair& src, const pair& dst) const

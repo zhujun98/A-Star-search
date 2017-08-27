@@ -107,12 +107,14 @@ reconstructPath(const mmap::Map &map,
  * @param src: source point
  * @param dst: destination point
  * @param fast_search: true for fast search but the result path maybe
- *                     longer than the shortest path
+ *                     longer than the actual shortest path; false for
+ *                     guaranteed shortest path if it exists.
  * @param use_dijkstra: true for degenerating to Dijkstra's algorithm.
  * @return: a pair with the first element being the cost of the shortest
  *          path and the second element being a 1D vector similar to
  *          elevation and overrides with the point in the shortest path
- *          marked "true".
+ *          marked "true". Throw std::invalid_argument if path does not
+ *          exist.
  */
 std::pair<double, std::vector<bool>>
 aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
