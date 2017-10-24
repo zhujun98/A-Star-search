@@ -37,14 +37,14 @@ inline double heuristicOctile(const pair& src, const pair& dst)
 /**
  * Comparator
  */
-struct cmpByCost
-{
-    inline bool operator()(const std::pair<double, pair>& a,
-                    const std::pair<double, pair>& b) const
-    {
-        return a.first > b.first;
-    }
-};
+//struct cmpByCost
+//{
+//    bool operator()(const std::pair<double, pair>& a,
+//                    const std::pair<double, pair>& b) const
+//    {
+//        return a.first > b.first;
+//    }
+//};
 
 /**
  * Reconstruct the shortest path from the search result
@@ -108,9 +108,20 @@ aStarSearch(const mmap::Map &map, const pair& src, const pair& dst,
     // point plus the estimated cost from the current point to the
     // destination; the second element is the coordinate of the current
     // point.
+
+    auto cmp = [](const std::pair<double, pair>& a,
+                  const std::pair<double, pair>& b)
+    {
+      return (a.first > b.first);
+    };
     std::priority_queue<std::pair<double, pair>,
                         std::vector<std::pair<double, pair>>,
-                        cmpByCost> open_set;
+                        decltype(cmp)> open_set(cmp);
+
+//    std::priority_queue<std::pair<double, pair>,
+//        std::vector<std::pair<double, pair>>,
+//        cmpByCost> open_set;
+
     // actual minimum cost to the source so far
     std::vector<double> costs(map.size(), kMaxCost);
     // the previous point that allows to achieve the minimum cost so far
